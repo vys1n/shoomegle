@@ -1,0 +1,117 @@
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px; 
+    width: 100%;
+}
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: #f8fafc;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    min-height: 100vh;
+    margin: 0;
+    padding-top: 60px; 
+}
+
+#title {
+    text-align: center;
+    max-width: 1000px;
+}
+
+#title h1 {
+    font-size: 3rem;
+    color: #d35a0f;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: #000000;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.login-box {
+    background: white;
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+}
+
+.input-group {
+    margin: 20px 0;
+    text-align: left;
+}
+
+input[type="email"] {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+button {
+    width: 40%;
+    padding: 12px;
+    background-color: #ff6f00;
+    color: white;
+    display: block;
+    margin: 20px auto 0 auto;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    background-color: #bd4c00;
+    transform: translateY(-1px);
+}
+
+.login-box {
+    background: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 1.2rem 3rem 2.5rem 2rem; 
+    
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e2e8f0;
+    
+    box-sizing: border-box; 
+}
+
+.login-box h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    color: #1e293b;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 40px; /* Adds space around the edges on small screens */
+    }
+
+    #title h1 {
+        font-size: 2.2rem; /* Shrinks title text on mobile */
+    }
+
+    .login-box {
+        padding: 1.5rem; /* Standardizes padding for small screens */
+        width: 100%;
+    }
+    
+    .content-wrapper {
+        gap: 25px; /* Reduces vertical gap on mobile */
+    }
+}
