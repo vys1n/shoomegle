@@ -9,36 +9,25 @@
 </head>
 <body>
     <main class="container">
-        <div class="video-section">
-            <div class="video-panes">
-                <div class="user-pane">
-                    <video id="userVideo" autoplay playsinline></video>
-                    </div>
-
-                <div class="partner-pane">
-                    <img src="img/image.png" alt="Partner Placeholder" id="partnerVideo">
-                </div>
+        <div class="video-row">
+            <div class="video-pane">
+                <video id="userVideo" autoplay playsinline></video>
+            </div>
+            <div class="video-pane">
+                <img src="img/image.png" alt="Partner Placeholder" id="partnerVideo">
             </div>
         </div>
 
-        <div class="chat-section">
-            <div class="chat-box">
-                <div class="status-msg">
-                    <p>You are now connected with someone...</p>
-                </div>
-                
-                <div id="chatHistory" class="chat-history">
-                    </div>
-                <div class="input-container">
-                    <textarea id="chatInput" placeholder="Type a message..."></textarea>
-                </div>
-            </div>
+        <div class="status-container">
+            <p> You are now chatting with a random person from your university </p>
+        </div>
 
-            <div class="control-bar">
-                <div class="button-group">
-                    <button id="preferencesBtn" class="btn"> PREFERENCES </button>
-                    <button id="nextBtn" class="btn primary-btn"> NEXT </button>
-                </div>
+        <div class="controls-container">
+            <div class="stop-box">
+                <button id="nextBtn"> Stop </button>
+            </div>
+            <div class="input-box">
+                <textarea id="chatInput" placeholder="Type your text message here ..."></textarea>
             </div>
         </div>
     </main>

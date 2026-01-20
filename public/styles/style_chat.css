@@ -8,40 +8,32 @@
 body, html {
     height: 100%;
     font-family: 'Inter', sans-serif;
-    background-color: #f5f5f5;
-    overflow: hidden; 
+    background-color: #fff;
+    overflow: hidden;
 }
 
-/* Main Layout Container */
 .container {
     display: flex;
+    flex-direction: column;
     height: 100vh;
-    width: 100vw;
-    padding: 10px;
-    gap: 15px; /* Added slightly more gap for a cleaner look */
+    padding: 20px;
+    gap: 15px;
 }
 
-/* Left Side: Video Section (Adjusted to 35% Width) */
-.video-section {
-    width: 40%; 
+/* 1. Video Row: Top 60-70% of screen */
+.video-row {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
+    height: 80%;
+    flex: 1; /* Takes up remaining space */
+    gap: 20px;
 }
 
-.video-panes {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    gap: 10px;
-}
-
-.user-pane, .partner-pane {
-    flex: 1; /* Equal 50/50 height proportion */
-    background-color: #000;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+.video-pane {
+    flex: 1;
+    border: 2px solid #ffffff;
+    /*border-radius: 15px;*/
     overflow: hidden;
+    background: #000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -53,46 +45,57 @@ video, img {
     object-fit: cover;
 }
 
-/* Right Side: Chat & Controls (Remaining 65% Width) */
-.chat-section {
-    flex: 1; 
+/* 2. Status Message: Small Middle Section */
+.status-container {
+    padding: 5px 0;
+}
+
+.status-container p {
+    font-size: 16px;
+    color: #333;
+}
+
+/* 3. Controls Container: Bottom Section */
+.controls-container {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-/* Chat Box (Status + History + Input combined) */
-.chat-box {
-    flex: 5; /* Takes up most of the vertical space */
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-}
-
-.status-msg {
-    padding: 12px;
-    background-color: #fafafa;
-    border-bottom: 1px solid #eee;
-    font-weight: 600;
-    color: #444;
-}
-
-/* The actual scrollable chat messages */
-.chat-history {
-    flex-grow: 1;
-    padding: 15px;
-    overflow-y: auto;
-    font-size: 0.95rem;
-}
-
-/* Input area now inside the chat box at the bottom */
-.input-container {
+    height: 120px; /* Fixed height for the bottom bar */
+    border: 2px solid #ffffff;
+    border-radius: 20px;
     padding: 10px;
-    border-top: 1px solid #eee;
-    height: 100%; /* Fixed height for the typing area */
+    gap: 15px;
+}
+
+/* Stop Button Box */
+.stop-box {
+    width: 100px;
+    border: 2px solid #ffffff;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#nextBtn {
+    width: 100%;
+    height: 100%;
+    background: #ff6f00;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 13px;
+}
+
+#nextBtn:hover {
+    background: #e66400;
+}
+
+/* Input Area Box */
+.input-box {
+    flex: 1;
+    border: 2px solid #333;
+    border-radius: 15px;
+    padding: 10px;
 }
 
 #chatInput {
@@ -102,48 +105,5 @@ video, img {
     outline: none;
     resize: none;
     font-family: inherit;
-    font-size: 1rem;
-}
-
-/* Control Bar (Buttons only) */
-.control-bar {
-    height: 10%; /* Fixed height for the bottom bar */
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.button-group {
-    display: flex;
-    gap: 10px;
-    width: 100%;
-    height: 100%;
-}
-
-.btn {
-    flex: 1;
-    height: 100%;
-    border: 1px solid #333;
-    background: white;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background 0.2s;
-}
-
-.btn:hover {
-    background: #cecece;
-}
-
-.primary-btn {
-    background: #ff6f00;
-    color: rgb(0, 0, 0);
-    flex: 2; /* "NEXT" is wider than "PREFERENCES" */
-}
-
-.primary-btn:hover {
-    background: #e66400;
+    font-size: 15px;
 }
