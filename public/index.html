@@ -16,8 +16,8 @@
         </header>
 
         <div class="login-box">
-            <form action="/submit-your-form" method="POST">
-                <h2>Login</h2>
+            <form id="email-form" class="fade-in" action="/submit-your-form" method="POST">
+                <h2> Login </h2>
                 <div class="input-group">
                     <label for="user-email"> Your University Email </label>
                     <input 
@@ -28,10 +28,23 @@
                         required
                     >
                 </div>
-                <button type="submit"> Get OTP </button>
+                <button type="submit" id="get-otp-btn"> Get OTP </button>
+            </form>
+
+            <form id="otp-form" style="display: none;">
+                <h2> Enter OTP </h2>
+                <div class="input-group">
+                    <label for="otp-code"> 4-Digit Code </label>
+                    <input type="text" id="otp-code" placeholder="0 0 0 0" maxlength="4" required>
+                </div>
+                <button type="submit"> Verify & Enter </button>
+                <p id="resend-text" style="font-size: 12px; margin-top: 10px; cursor: pointer;"> 
+                    Didn't get code? Resend 
+                </p>
             </form>
         </div>
     </div>
 </div>
+<script src="../scripts/swap_forms.js"></script>
 </body>
 </html>
