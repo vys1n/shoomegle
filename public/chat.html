@@ -8,23 +8,41 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="video-panes">
-        <div class="user-pane">
-            <video id="userVideo" autoplay playsinline></video>
-            <script src="../scripts/camera_feed.js"></script>
+    <main class="container">
+        <div class="video-section">
+            <div class="video-panes">
+                <div class="user-pane">
+                    <video id="userVideo" autoplay playsinline></video>
+                    </div>
+
+                <div class="partner-pane">
+                    <img src="img/image.png" alt="Partner Placeholder" id="partnerVideo">
+                </div>
+            </div>
         </div>
 
-        <div class="partner-pane">
-            <img src="img/image.png" alt="Partner Placeholder">
+        <div class="chat-section">
+            <div class="chat-box">
+                <div class="status-msg">
+                    <p>You are now connected with someone...</p>
+                </div>
+                
+                <div id="chatHistory" class="chat-history">
+                    </div>
+                <div class="input-container">
+                    <textarea id="chatInput" placeholder="Type a message..."></textarea>
+                </div>
+            </div>
+
+            <div class="control-bar">
+                <div class="button-group">
+                    <button id="preferencesBtn" class="btn"> PREFERENCES </button>
+                    <button id="nextBtn" class="btn primary-btn"> NEXT </button>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <div class="chat-box">
-
-    </div>
-
-    <div class="control-bar">
-        
-    </div>
+    <script src="../scripts/camera_feed.js"></script>
 </body>
 </html>

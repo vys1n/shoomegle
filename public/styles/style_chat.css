@@ -1,0 +1,149 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    overflow: hidden; 
+}
+
+/* Main Layout Container */
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    padding: 10px;
+    gap: 15px; /* Added slightly more gap for a cleaner look */
+}
+
+/* Left Side: Video Section (Adjusted to 35% Width) */
+.video-section {
+    width: 40%; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.video-panes {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 10px;
+}
+
+.user-pane, .partner-pane {
+    flex: 1; /* Equal 50/50 height proportion */
+    background-color: #000;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+video, img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Right Side: Chat & Controls (Remaining 65% Width) */
+.chat-section {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Chat Box (Status + History + Input combined) */
+.chat-box {
+    flex: 5; /* Takes up most of the vertical space */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.status-msg {
+    padding: 12px;
+    background-color: #fafafa;
+    border-bottom: 1px solid #eee;
+    font-weight: 600;
+    color: #444;
+}
+
+/* The actual scrollable chat messages */
+.chat-history {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    font-size: 0.95rem;
+}
+
+/* Input area now inside the chat box at the bottom */
+.input-container {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    height: 80px; /* Fixed height for the typing area */
+}
+
+#chatInput {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+/* Control Bar (Buttons only) */
+.control-bar {
+    height: 60px; /* Fixed height for the bottom bar */
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.btn {
+    flex: 1;
+    height: 100%;
+    border: 1px solid #333;
+    background: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #f0f0f0;
+}
+
+.primary-btn {
+    background: #333;
+    color: white;
+    flex: 2; /* "NEXT" is wider than "PREFERENCES" */
+}
+
+.primary-btn:hover {
+    background: #000;
+}
