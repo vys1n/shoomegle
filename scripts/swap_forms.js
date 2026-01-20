@@ -37,9 +37,12 @@ otpForm.addEventListener('submit', (e) => {
     const otpValue = document.getElementById('otp-code').value;
     
     // For now, let's just log it to the console to prove it works
-    console.log("Verifying OTP:", otpValue);
+    //console.log("Verifying OTP:", otpValue);
 
     // This is where you would eventually check the code and 
     // redirect the user to the chat room.
-    alert("OTP Entered: " + otpValue + ". Redirecting to chat...");
+    //alert("OTP Entered: " + otpValue + ". Redirecting to chat...");
+
+    // Redirect to chat page (Replace with actual chat page URL)
+    window.location.href = "chat.html";
 });
