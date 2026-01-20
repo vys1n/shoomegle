@@ -1,0 +1,24 @@
+{
+  "name": "shoomegle",
+  "version": "1.0.0",
+  "description": "Talk anonymously with peers from your university",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vys1n/shoomegle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/vys1n/shoomegle/issues"
+  },
+  "homepage": "https://github.com/vys1n/shoomegle#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
