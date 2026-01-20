@@ -92,7 +92,7 @@ video, img {
 .input-container {
     padding: 10px;
     border-top: 1px solid #eee;
-    height: 80px; /* Fixed height for the typing area */
+    height: 100%; /* Fixed height for the typing area */
 }
 
 #chatInput {
@@ -107,7 +107,7 @@ video, img {
 
 /* Control Bar (Buttons only) */
 .control-bar {
-    height: 60px; /* Fixed height for the bottom bar */
+    height: 10%; /* Fixed height for the bottom bar */
     background: white;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -135,15 +135,15 @@ video, img {
 }
 
 .btn:hover {
-    background: #f0f0f0;
+    background: #cecece;
 }
 
 .primary-btn {
-    background: #333;
-    color: white;
+    background: #ff6f00;
+    color: rgb(0, 0, 0);
     flex: 2; /* "NEXT" is wider than "PREFERENCES" */
 }
 
 .primary-btn:hover {
-    background: #000;
+    background: #e66400;
 }
