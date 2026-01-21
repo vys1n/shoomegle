@@ -16,14 +16,15 @@
         </header>
 
         <div class="login-box">
-            <form id="email-form" class="fade-in" action="/submit-your-form" method="POST">
+            <form id="email-form" class="fade-in">
                 <h2> Login </h2>
                 <div class="input-group">
                     <label for="user-email"> Your University Email </label>
                     <input 
                         type="email" 
                         id="user-email" 
-                        name="email" 
+                        name="email"
+                        pattern="^[a-z]+@shooliniuniversity\.com$"
                         placeholder="yourfullname@shooliniuniversity.com" 
                         required
                     >
@@ -33,9 +34,10 @@
 
             <form id="otp-form" style="display: none;">
                 <h2> Enter OTP </h2>
+                <h3> You will find the OTP in your Outlook Junk folder </h3>
                 <div class="input-group">
-                    <label for="otp-code"> 4-Digit Code </label>
-                    <input type="text" id="otp-code" placeholder="0 0 0 0" maxlength="4" required>
+                    <label for="otp-code"> 6-Digit Code </label>
+                    <input type="text" id="otp-code" placeholder="1 2 3 4 5 6" maxlength="6" required>
                 </div>
                 <button type="submit"> Verify & Enter </button>
                 <p id="resend-text" style="font-size: 12px; margin-top: 10px; cursor: pointer;"> 
@@ -45,6 +47,6 @@
         </div>
     </div>
 </div>
-<script src="../scripts/swap_forms.js"></script>
+<script src="/scripts/swap_forms.js"></script>
 </body>
 </html>
