@@ -23,7 +23,7 @@ body, html {
 /* 1. Video Row: Top 60-70% of screen */
 .video-row {
     display: flex;
-    height: 80%;
+    height: 70%;
     flex: 1; /* Takes up remaining space */
     gap: 20px;
 }
