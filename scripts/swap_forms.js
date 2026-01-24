@@ -31,6 +31,7 @@ emailForm.addEventListener('submit', async (e) => {
 
     } catch (error) {
         alert("Something went wrong. Please try again");
+        console.log(error);
         btn.innerText = "Get OTP";
         btn.disabled = false;
     }
