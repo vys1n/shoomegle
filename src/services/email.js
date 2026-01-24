@@ -1,4 +1,4 @@
-require('dotenv').config();
+import 'dotenv/config';
 const nodemailer = require('nodemailer');
 
 const otpStore = new Map();         // { email : { otp, expiresAt }}
