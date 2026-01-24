@@ -12,7 +12,7 @@ emailForm.addEventListener('submit', async (e) => {
     btn.innerText = "Sending ... ";
 
     try {
-        const response = await fetch('http://localhost:3000/api/send-otp', {
+        const response = await fetch('/api/send-otp', {
             method: 'POST',
             body: JSON.stringify({ email: email }),
             headers: { 'Content-Type': 'application/json' }
@@ -49,7 +49,7 @@ otpForm.addEventListener('submit', async (e) => {
     btn.innerText = "Verifying ... ";
 
     try {
-        const response = await fetch('http://localhost:3000/api/verify-otp', {
+        const response = await fetch('/api/verify-otp', {
             method: 'POST',
             body: JSON.stringify({ email: email, otp: otpValue }),
             headers: { 'Content-Type': 'application/json' }
