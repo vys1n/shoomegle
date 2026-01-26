@@ -14,19 +14,20 @@
                 <video id="userVideo" autoplay playsinline muted></video>
             </div>
             <div class="video-pane">
-                <video id="partnerVideo" autoplay playsinline></video>
+                <video id="partnerVideo" autoplay playsinline muted></video>
             </div>
         </div>
 
         <div class="status-container">
-            <p> You are now chatting with a random person from your university </p>
+            <p> Waiting to join a peer ... </p>
         </div>
 
         <div class="controls-container">
             <div class="stop-box">
-                <button id="nextBtn"> Stop </button>
+                <button id="nextBtn" data-state="running"> Stop </button>
             </div>
             <div class="input-box">
+                <div id="chatMessages" class="chat-messages"></div>
                 <textarea id="chatInput" placeholder="Type your text message here ..."></textarea>
             </div>
         </div>
