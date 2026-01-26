@@ -25,51 +25,13 @@ const servers = {
 };
 
 let pc = null;
-let dataChannel = null;
 let localStream = null;
 let remoteStream = null;
 let currentCallDocId = null;
-let unsubscribeList = [];
+let unsubscribeSnapshot = null;
 
 let localVideo = null;
 let remoteVideo = null;
-
-let onMessageCallback = null;
-let onStatusCallback = null;
-
-export function setOnMessage(callback) {
-    onMessageCallback = callback;
-}
-
-export function setOnStatus(callback) {
-    onStatusCallback = callback;
-}
-
-export function sendMessage(message) {
-    if (dataChannel && dataChannel.readyState === 'open') {
-        dataChannel.send(message);
-        return true;
-    }
-    return false;
-}
-
-function setupDataChannel(channel) {
-    dataChannel = channel;
-
-    dataChannel.onopen = () => {
-        console.log("Data channel is open");
-        // No status callback here to avoid 'Connected' message
-    };
-
-    dataChannel.onmessage = (event) => {
-        if (onMessageCallback) onMessageCallback(event.data);
-    };
-
-    dataChannel.onclose = () => {
-        console.log("Data channel is closed");
-        if (onStatusCallback) onStatusCallback("Disconnected");
-    };
-}
 
 export function initMedia(locStream, locVideo, remVideo) {
     localStream = locStream;
@@ -81,7 +43,6 @@ export function initMedia(locStream, locVideo, remVideo) {
 
 export async function startMatchmaking() {
     await hangUp();
-    if (onStatusCallback) onStatusCallback("Looking for a random peer...");
 
     pc = new RTCPeerConnection(servers);
     remoteStream = new MediaStream();
@@ -97,70 +58,22 @@ export async function startMatchmaking() {
         });
     };
 
-    let disconnectTimeout = null;
-
-    pc.oniceconnectionstatechange = () => {
-        console.log("ICE Connection State:", pc.iceConnectionState);
-        
-        if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
-            if (disconnectTimeout) {
-                clearTimeout(disconnectTimeout);
-                disconnectTimeout = null;
-            }
-            if (onStatusCallback) onStatusCallback("You are now chatting with a random person.");
-        }
-
-        if (pc.iceConnectionState === 'disconnected') {
-            if (onStatusCallback) onStatusCallback("Reconnecting... Please wait.");
-            // Wait 5 seconds to see if it recovers
-            disconnectTimeout = setTimeout(() => {
-                console.log("Reconnection failed. Restarting matchmaking...");
-                if (onStatusCallback) onStatusCallback("Stranger disconnected. Looking for a new match...");
-                startMatchmaking();
-            }, 5000);
-        }
-
-        if (pc.iceConnectionState === 'failed' || pc.iceConnectionState === 'closed') {
-            if (disconnectTimeout) clearTimeout(disconnectTimeout);
-            console.log("Connection lost. Restarting matchmaking...");
-            if (onStatusCallback) onStatusCallback("Stranger disconnected. Looking for a new match...");
-            startMatchmaking();
-        }
-    };
-
     try {
         console.log("Checking Firestore for waiting peers ... ");
         const q = query(collection(db, 'waiting_queue'), where('status', '==', 'waiting'), limit(20));
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            const now = Date.now();
-            const validDocs = [];
+            const randIdx = Math.floor(Math.random() * querySnapshot.docs.length);
+            const roomDoc = querySnapshot.docs[randIdx];
 
-            for (const d of querySnapshot.docs) {
-                const createdAt = d.data().createdAt?.toMillis() || now;
-                if (now - createdAt > 30000) {
-                    deleteDoc(d.ref).catch(e => console.warn("Cleanup error:", e));
-                } else {
-                    validDocs.push(d);
-                }
-            }
+            console.log("Found waiting peers. Trying to join room: ", roomDoc.id);
 
-            if (validDocs.length > 0) {
-                const randIdx = Math.floor(Math.random() * validDocs.length);
-                const roomDoc = validDocs[randIdx];
-
-                console.log("Found waiting peers. Trying to join room: ", roomDoc.id);
-
-                try {
-                    await joinRoom(roomDoc);
-                } catch (error) {
-                    console.warn("Failed to join room (maybe taken), retrying ... ", error);
-                    await startMatchmaking();
-                }
-            } else {
-                console.log("Only stale rooms found. Creating a new room ...");
-                await createRoom();
+            try {
+                await joinRoom(roomDoc);
+            } catch (error) {
+                console.warn("Failed to jpin room (maybe taken), retrying ... ", error);
+                await startMatchmaking();
             }
         } else {
             console.log("No peers found. Creating a new room ...");
@@ -172,8 +85,10 @@ export async function startMatchmaking() {
 }
 
 export async function hangUp() {
-    unsubscribeList.forEach(unsubscribe => unsubscribe());
-    unsubscribeList = [];
+    if (unsubscribeSnapshot) {
+        unsubscribeSnapshot();
+        unsubscribeSnapshot = null;
+    }
 
     if (pc) {
         pc.close();
@@ -202,10 +117,6 @@ async function createRoom() {
 
         currentCallDocId = callDocRef.id;
 
-        // Setup Data Channel (Creator side)
-        const channel = pc.createDataChannel("chat");
-        setupDataChannel(channel);
-
         // save ICE candidates
         pc.onicecandidate = (event) => {
             if (event.candidate) {
@@ -229,10 +140,9 @@ async function createRoom() {
             createdAt: serverTimestamp()
         });
         console.log("Room created successfully. Waiting for peer to connect ... ");
-        if (onStatusCallback) onStatusCallback("Waiting for someone to join...");
 
         // listen for answer
-        const unsubCall = onSnapshot(callDocRef, (snapshot) => {
+        unsubscribeSnapshot = onSnapshot(callDocRef, (snapshot) => {
             const data = snapshot.data();
             if (!pc.currentRemoteDescription && data?.answer) {
                 console.log("Peer joined. Connecting ... ");
@@ -240,10 +150,9 @@ async function createRoom() {
                 pc.setRemoteDescription(answerDescription);
             }
         });
-        unsubscribeList.push(unsubCall);
 
         // listen for remote ICE candidates
-        const unsubCandidates = onSnapshot(answerCandidates, (snapshot) => {
+        onSnapshot(answerCandidates, (snapshot) => {
             snapshot.docChanges().forEach((change) => {
                 if (change.type === 'added') {
                     const candidate = new RTCIceCandidate(change.doc.data());
@@ -251,7 +160,6 @@ async function createRoom() {
                 }
             });
         });
-        unsubscribeList.push(unsubCandidates);
     } catch (error) {
         console.error("Error creating room: ", error);
     }
@@ -261,11 +169,6 @@ async function joinRoom(roomDoc) {
     const callDocRef = roomDoc.ref;
     const offerCandidates = collection(callDocRef, 'offerCandidates');
     const answerCandidates = collection(callDocRef, 'answerCandidates');
-
-    // Setup Data Channel (Joiner side)
-    pc.ondatachannel = (event) => {
-        setupDataChannel(event.channel);
-    };
 
     // claim the room
     await runTransaction(db, async (transaction) => {
@@ -278,7 +181,6 @@ async function joinRoom(roomDoc) {
 
     currentCallDocId = callDocRef.id;
     console.log("Joined room successfully: ", currentCallDocId);
-    if (onStatusCallback) onStatusCallback("Partner found. Connecting...");
 
     // handle ICE
     pc.onicecandidate = (event) => {
@@ -302,7 +204,7 @@ async function joinRoom(roomDoc) {
     await updateDoc(callDocRef, { answer });
 
     // listen for remote ICE candidates
-    const unsubCandidates = onSnapshot(offerCandidates, (snapshot) => {
+    onSnapshot(offerCandidates, (snapshot) => {
         snapshot.docChanges().forEach((change) => {
             if (change.type === 'added') {
                 const candidate = new RTCIceCandidate(change.doc.data());
@@ -310,6 +212,5 @@ async function joinRoom(roomDoc) {
             }
         });
     });
-    unsubscribeList.push(unsubCandidates);
 }
 
