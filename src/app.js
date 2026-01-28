@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const { sendOTP } = require('./services/email');
 const { verifyOTP } = require('./services/otp');
+const { startCleanupTask } = require('./services/cleanup');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,8 @@ app.use('/scripts', express.static(path.join(__dirname, '../scripts')));
 // middleware
 app.use(cors());            // allow frontend to connect
 app.use(express.json());    // parse json bodies
+
+startCleanupTask();
 
 app.post('/api/send-otp', async (req, res) => {
     const { email } = req.body;

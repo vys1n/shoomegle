@@ -15,8 +15,7 @@ const transporter = nodemailer.createTransport({
 });
 
 function isValidEmail(email) {
-    // const regex = /^[a-z]+@shooliniuniversity\.com$/;
-    const regex = /^[a-z0-9]+@[a-z]+\.com$/;
+    const regex = /^[a-z]+@shooliniuniversity\.com$/;
     return regex.test(email);
 }
 
