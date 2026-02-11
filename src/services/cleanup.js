@@ -14,8 +14,10 @@ async function cleanupStaleRooms() {
         const querySnapshot = await getDocs(q);
         const deletePromises = [];
 
+        // check each room
         querySnapshot.forEach((doc) => {
             const data = doc.data();
+            // convert firestore timestamp to JS data object
             const createdAt = data.createdAt ? data.createdAt.toDate() : null;
 
             if (!createdAt || createdAt < thirtySecondsAgo) {
@@ -23,6 +25,7 @@ async function cleanupStaleRooms() {
             }
         });
 
+        // all delete tasks in parallel (Promise.all) for speed
         await Promise.all(deletePromises);
 
         if (deletePromises.length > 0) {
