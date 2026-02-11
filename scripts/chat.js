@@ -9,6 +9,7 @@ const chatMessages = document.getElementById("chatMessages");
 let userStream;
 
 function appendMessage(label, text, type = 'normal') {
+    // main container for the message line
     const msgDiv = document.createElement('div');
     msgDiv.classList.add('message');
     
@@ -21,6 +22,7 @@ function appendMessage(label, text, type = 'normal') {
         labelSpan.classList.add(label === 'You' ? 'you-label' : 'stranger-label');
         labelSpan.innerText = `${label}: `;
         
+        // actual message text
         const textSpan = document.createElement('span');
         textSpan.innerText = text;
         
@@ -28,7 +30,9 @@ function appendMessage(label, text, type = 'normal') {
         msgDiv.appendChild(textSpan);
     }
     
+    // append to chat history box
     chatMessages.appendChild(msgDiv);
+    // auto-scroll (show latest message on top)
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
@@ -66,6 +70,7 @@ async function startApp() {
     }
 }
 
+// rate-limiting
 let messageCount = 0;
 let lastReset = Date.now();
 
@@ -73,7 +78,6 @@ chatInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
 
-        // Rate Limiting Logic
         const now = Date.now();
         if (now - lastReset > 1000) {
             messageCount = 0;
@@ -91,7 +95,6 @@ chatInput.addEventListener('keydown', (e) => {
                 messageCount++;
                 appendMessage('You', text);
                 chatInput.value = '';
-                // Optional: clear warning if they were previously blocked
                 if (statusText.innerText.includes("Too many messages")) {
                     updateStatus("You are now chatting with a random person.");
                 }
@@ -101,14 +104,14 @@ chatInput.addEventListener('keydown', (e) => {
 });
 
 nextBtn.addEventListener('click', async () => {
-    chatMessages.innerHTML = ''; // Clear chat on next/stop
+    chatMessages.innerHTML = '';
     const isRunning = nextBtn.getAttribute('data-state') === 'running';
 
     if (isRunning) {
         await hangUp();
         nextBtn.innerText = "Start";
         nextBtn.setAttribute('data-state', 'stopped');
-        partnerVideo.srcObject = null; // clear remote video
+        partnerVideo.srcObject = null;
         updateStatus("Stopped. Press Start to find a partner.");
     } else {
         nextBtn.innerText = "Stop";
