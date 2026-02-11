@@ -103,6 +103,7 @@ export async function startMatchmaking() {
         console.log("ICE Connection State: ", pc.iceConnectionState);
         
         if (pc.iceConnectionState === 'connected' || pc.iceConnectionState === 'completed') {
+            // clear any "reconnecting" timers
             if (disconnectTimeout) {
                 clearTimeout(disconnectTimeout);
                 disconnectTimeout = null;
@@ -135,18 +136,32 @@ export async function startMatchmaking() {
         const querySnapshot = await getDocs(q);
 
         if (!querySnapshot.empty) {
-            const validDocs = querySnapshot.docs;
+            // filter out "zombie" rooms
+            const now = Date.now();
+            const validDocs = [];
+            for (const d of querySnapshot.docs) {
+                const createdAt = d.data().createdAt?.toMillis() || now;
+                if (now - createdAt > 30000) {
+                    deleteDoc(d.ref);
+                } else {
+                    validDocs.push(d);
+                }
+            }
 
-            const randIdx = Math.floor(Math.random() * validDocs.length);
-            const roomDoc = validDocs[randIdx];
+            if (validDocs.length > 0) {
+                const randIdx = Math.floor(Math.random() * validDocs.length);
+                const roomDoc = validDocs[randIdx];
 
-            console.log("Found waiting peers. Trying to join room: ", roomDoc.id);
+                console.log("Found waiting peers. Trying to join room: ", roomDoc.id);
 
-            try {
-                await joinRoom(roomDoc);
-            } catch (error) {
-                console.warn("Failed to join room (maybe taken), retrying ... ", error);
-                await startMatchmaking();
+                try {
+                    await joinRoom(roomDoc);
+                } catch (error) {
+                    console.warn("Failed to join room (maybe taken), retrying ... ", error);
+                    await startMatchmaking();
+                }
+            } else {
+                await createRoom();
             }
         } else {
             console.log("No peers found. Creating a new room ...");
