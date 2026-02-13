@@ -5,13 +5,15 @@ const otpStore = new Map();         // { email : { otp, expiresAt }}
 const rateLimitStore = new Map();   // { email: lastSentAt }
 
 const transporter = nodemailer.createTransport({
-    pool: true,
-    maxConnections: 5,
-    service: 'gmail',
+    port: 465,
+    secure: true,
+    host: 'smtp.gmail.com',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
-    }
+    },
+    pool: true,
+    maxConnections: 5,
 });
 
 function isValidEmail(email) {
