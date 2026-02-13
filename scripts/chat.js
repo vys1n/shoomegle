@@ -8,9 +8,9 @@ const chatMessages = document.getElementById("chatMessages");
 
 let userStream;
 
-// if (!sessionStorage.getItem('userEmail')) {
-//     window.location.href = "/index.html";
-// }
+if (!sessionStorage.getItem('userEmail')) {
+    window.location.href = "/index.html";
+}
 
 function appendMessage(label, text, type = 'normal') {
     // main container for the message line
