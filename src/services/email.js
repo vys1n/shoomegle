@@ -5,12 +5,12 @@ const otpStore = new Map();         // { email : { otp, expiresAt }}
 const rateLimitStore = new Map();   // { email: lastSentAt }
 
 const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // use STARTTLS
+    host: 'smtp.resend.com',
+    port: 465,
+    secure: true,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: 'resend',
+        pass: process.env.RESEND_API_KEY
     },
     pool: true,
     maxConnections: 5,
@@ -62,7 +62,7 @@ async function sendOTP(email){
         rateLimitStore.set(email, Date.now());
 
         const mailOptions = {
-            from: 'golatopka@gmail.com',
+            from: 'Shoomegle <onboarding@resend.dev>',
             to: email,
             subject: 'Your OTP for Shoomegle',
             text: `Your OTP is: ${otp}\n\nThis OTP will expire in 2 minutes.\n\nDo not share this OTP.`,
@@ -78,7 +78,7 @@ async function sendOTP(email){
         };
 
         await transporter.sendMail(mailOptions);
-
+        
         return {
             success: true,
             message: 'OTP sent successfully to your email.'
