@@ -1,4 +1,4 @@
-project_directory_description.txt
 node_modules/
 .env
 .vscode/
+sendMail_twilio_recovery_key.txt
